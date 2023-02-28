@@ -12,6 +12,7 @@ All the changes I made to the mod are listed below
 - Teleport Ritual now summons the taglocked entity to the circle
 - Taglock now warns the target player, has a success chance and cooldown
 - Changed some effect stats
+- Added Loactor Ritual 
 
 # Original README below this line
 

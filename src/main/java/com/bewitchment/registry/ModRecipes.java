@@ -585,6 +585,7 @@ public class ModRecipes {
 	}
 
 	protected static void addRitualRecipe() {
+		ritualRecipes.add(new RitualLocator());
 		ritualRecipes.add(new RitualSolarGlory());
 		ritualRecipes.add(new RitualHighMoon());
 		ritualRecipes.add(new RitualSandsOfTime());

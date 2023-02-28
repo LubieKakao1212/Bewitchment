@@ -1,4 +1,9 @@
-﻿#BOOKS
+﻿#Dimensions
+dimension.overworld=Overworld
+dimension.the_nether=The Nether
+dimension.the_end=The End
+
+#BOOKS
 
 item.bewitchment.book_of_shadows.name=Book of Shadows
 info.bewitchment.book_of_shadows.landing=Witchcraft is an ancient art of magic and nature. This book shall guide you in discovering its secrets for yourself.
@@ -794,6 +799,7 @@ ritual.precondition.sacrifice=A valid sacrifice is require to start this ritual
 ritual.precondition.invalid_location=No target location found
 ritual.precondition.wednesday=It is not Wednesday, my dudes
 
+ritual.bewitchment.locator=Ritual of Hyperdimensional Search
 ritual.bewitchment.solar_glory=Ritual of Solar Glory
 ritual.bewitchment.high_moon=Ritual of the High Moon
 ritual.bewitchment.sands_of_time=Ritual of the Sands of Time
