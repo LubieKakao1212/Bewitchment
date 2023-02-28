@@ -48,6 +48,7 @@ repositories {
     }
     maven { url = "http://dvs1.progwml6.com/files/maven" }
     maven { url = "https://minecraft.curseforge.com/api/maven" }
+    maven { url = "https://cursemaven.com/" }
     maven { url "http://maven.tterrag.com" }
     maven { url "https://maven.blamejared.com" }
     maven { url "https://maven.mcmoddev.com/" }
@@ -98,6 +99,7 @@ dependencies {
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
     deobfCompile "vazkii.patchouli:Patchouli:1.0-21.3"
     implementation 'org.jetbrains:annotations:20.1.0'
+
     shade('org.spongepowered:mixin:0.8') {
         transitive = false
         // }
@@ -116,48 +118,52 @@ dependencies {
         //    }
         // }
     }
+}
 
-    jar {
-        manifest.attributes(
-                'FMLCorePlugin': 'com.bewitchment.core.BewitchmentFMLLoadingPlugin',
-                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
-                'MixinConfigs': 'mixins.bewitchment.json',
-                'FMLCorePluginContainsFMLMod': 'true',
-                'ForceLoadAsMod': 'true'
-        )
+jar {
+    manifest.attributes(
+            'FMLCorePlugin': 'com.bewitchment.core.BewitchmentFMLLoadingPlugin',
+            'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+            'MixinConfigs': 'mixins.bewitchment.json',
+            'FMLCorePluginContainsFMLMod': 'true',
+            'ForceLoadAsMod': 'true'
+    )
 
-        configurations.shade.each { dep ->
-            from(project.zipTree(dep)) {
-                rename 'LICENSE.txt', 'org/spongepowered/LICENSE.txt'
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)) {
+            rename 'LICENSE.txt', 'org/spongepowered/LICENSE.txt'
 
-                exclude 'META-INF/*.SF'
-                exclude 'META-INF/*.RSA'
-                exclude 'META-INF/*.MF'
+            exclude 'META-INF/*.SF'
+            exclude 'META-INF/*.RSA'
+            exclude 'META-INF/*.MF'
 
-                exclude '**/*.html'
-            }
+            exclude '**/*.html'
         }
     }
+}
 
-    processResources {
-        inputs.property "version", project.version
-        inputs.property "mcversion", project.minecraft.version
-        from(sourceSets.main.resources.srcDirs) {
-            include 'mcmod.info'
-            expand 'version': project.version, 'mcversion': project.minecraft.version
-        }
-        from(sourceSets.main.resources.srcDirs) {
-            exclude 'mcmod.info'
-        }
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
-
-    mixin {
-        add sourceSets.main, "mixins.bewitchment.refmap.json"
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
     }
+}
 
-    sourceSets {
-        main {
-            refMap = "mixins.bewitchment.refmap.json"
-        }
+sourceSets {
+    main { output.resourcesDir = output.classesDir }
+}
+
+mixin {
+    add sourceSets.main, "mixins.bewitchment.refmap.json"
+}
+
+sourceSets {
+    main {
+        refMap = "mixins.bewitchment.refmap.json"
     }
 }

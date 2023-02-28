@@ -1,6 +1,23 @@
-# NOTICE! THIS BUILD IS OUT OF DATE, GO HERE: https://github.com/MoriyaShiine/bewitchment
+# Bewitchment Legacy forked for Kuba's Modded Factions server
 
-# Bewitchment: Legacy Version
+---
+
+## Disclaimer
+I have not made the original mod, credits for that go to the original authors
+However I made some changes as requested by owners of **Kuba's Modded Factions** server  
+All the changes I made to the mod are listed below 
+
+## Changes
+
+- Teleport Ritual now summons the taglocked entity to the circle
+
+# Original README below this line
+
+---
+
+## NOTICE! THIS BUILD IS OUT OF DATE, GO HERE: https://github.com/MoriyaShiine/bewitchment
+
+## Bewitchment: Legacy Version
 A mod inspired by Witchery
 
 ![BewitchmentV](https://img.shields.io/badge/Bewitchment%20version-0.0.22.64-purple.svg?longCache=true&style=flat)
