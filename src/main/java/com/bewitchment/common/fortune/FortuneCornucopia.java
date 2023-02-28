@@ -35,7 +35,8 @@ public class FortuneCornucopia extends Fortune {
 				}
 				if (valid) {
 					world.spawnEntity(entity);
-					entity.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, Integer.MAX_VALUE, 9));
+					//Integer.MAX_VALUE
+					entity.addPotionEffect(new PotionEffect(MobEffects.INSTANT_DAMAGE, 1, 9));
 				}
 			}
 		}

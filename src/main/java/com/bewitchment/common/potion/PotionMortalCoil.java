@@ -25,7 +25,8 @@ public class PotionMortalCoil extends ModPotion {
 	@SubscribeEvent
 	public void onLivingTick(LivingEvent.LivingUpdateEvent event) {
 		if (!event.getEntityLiving().world.isRemote && event.getEntityLiving().isPotionActive(this) && event.getEntityLiving().getActivePotionEffect(this).getDuration() == 1) {
-			event.getEntityLiving().attackEntityFrom(DamageSource.MAGIC, Integer.MAX_VALUE);
+			//Integer.MAX_VALUE
+			event.getEntityLiving().attackEntityFrom(DamageSource.MAGIC, 50);
 		}
 	}
 

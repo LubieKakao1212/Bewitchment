@@ -25,7 +25,9 @@ public class PotionWednesday extends ModPotion {
 			Bewitchment.network.sendToDimension(new SpawnParticle(EnumParticleTypes.EXPLOSION_HUGE, event.getEntityLiving().getPosition()), event.getEntityLiving().dimension);
 			event.getEntityLiving().world.playSound(null, event.getEntityLiving().getPosition(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.NEUTRAL, 1, 1);
 			if (event.getEntityLiving() instanceof EntityPlayer)
-				event.getEntityLiving().attackEntityFrom(DamageSource.OUT_OF_WORLD, Integer.MAX_VALUE);
+				//Integer.MAX_VALUE
+				//change OUT_OF_WORLD to MAGIC?
+				event.getEntityLiving().attackEntityFrom(DamageSource.OUT_OF_WORLD, 50);
 			else event.getEntityLiving().setDead();
 		}
 	}

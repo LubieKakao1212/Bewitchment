@@ -25,7 +25,8 @@ public class ContractMahapadma extends Contract {
 				target.world.setBlockState(pos, target.getRNG().nextBoolean() ? Blocks.PACKED_ICE.getDefaultState() : Blocks.ICE.getDefaultState());
 			}
 		}
-		target.attackEntityFrom(DamageSource.MAGIC, Integer.MAX_VALUE);
+		//Integer.MAX_VALUE
+		target.attackEntityFrom(DamageSource.MAGIC, 50);
 		return true;
 	}
 }

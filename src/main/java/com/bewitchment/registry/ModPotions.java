@@ -33,7 +33,7 @@ public class ModPotions {
 	public static Potion shell_armor = new PotionShellArmor();
 	public static Potion deflection = new PotionDeflection();
 	public static Potion revealing = new PotionRevealing();
-	public static Potion disrobing = new PotionDisrobing();
+	//public static Potion disrobing = new PotionDisrobing();
 	public static Potion sinking = new PotionSinking();
 	public static Potion cursed_leaps = new PotionCursedLeaps();
 	public static Potion hellfire = new PotionHellfire();

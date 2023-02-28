@@ -41,7 +41,8 @@ public class FortuneCatsAndDogs extends Fortune {
 				}
 				if (valid) {
 					world.spawnEntity(entity);
-					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, Integer.MAX_VALUE, 9));
+					//Integer.MAX_VALUE
+					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * 60 * 5, 9));
 					entity.addPotionEffect(new PotionEffect(ModPotions.wednesday, (20 * 3)));
 				}
 			}

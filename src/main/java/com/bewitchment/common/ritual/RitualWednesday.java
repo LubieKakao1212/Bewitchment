@@ -57,7 +57,8 @@ public class RitualWednesday extends Ritual {
 					for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().grow(50)))
 						CriteriaTriggers.SUMMONED_ENTITY.trigger(player, entity);
 					world.spawnEntity(entity);
-					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, Integer.MAX_VALUE, 9));
+					//Integer.MAX_VALUE
+					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * 60 * 5, 9));
 					entity.addPotionEffect(new PotionEffect(ModPotions.wednesday, (20 * 3) + world.rand.nextInt(100)));
 					entity.motionX += ((world.rand.nextFloat() * 2 - world.rand.nextFloat()) - world.rand.nextFloat()) / 2;
 					entity.motionY += ((world.rand.nextFloat() * 2 - world.rand.nextFloat()) - world.rand.nextFloat()) / 2;
@@ -90,7 +91,8 @@ public class RitualWednesday extends Ritual {
 					for (EntityPlayerMP player : world.getEntitiesWithinAABB(EntityPlayerMP.class, entity.getEntityBoundingBox().grow(50)))
 						CriteriaTriggers.SUMMONED_ENTITY.trigger(player, entity);
 					world.spawnEntity(entity);
-					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, Integer.MAX_VALUE, 9));
+					//Integer.MAX_VALUE
+					entity.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 20 * 60 * 5, 9));
 					entity.addPotionEffect(new PotionEffect(ModPotions.wednesday, (20 * 3) + world.rand.nextInt(100)));
 					entity.motionX += ((world.rand.nextFloat() * 2 - world.rand.nextFloat()) - world.rand.nextFloat()) / 2;
 					entity.motionY += ((world.rand.nextFloat() * 2 - world.rand.nextFloat()) - world.rand.nextFloat()) / 2;
