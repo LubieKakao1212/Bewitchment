@@ -35,6 +35,8 @@ public class ExtendedPlayer implements ICapabilitySerializable<NBTTagCompound>, 
 	public boolean canRitual = true;
 	public int ritualDisabledTime, fortuneTime, ritualsCast, mobsKilled, pets, peopleKilled;
 
+	public long lastTaglockUseTimestamp = -1;
+
 	public static void syncToClient(EntityPlayer player) {
 		if (!player.world.isRemote)
 			Bewitchment.network.sendTo(new SyncExtendedPlayer(player.getCapability(CAPABILITY, null).serializeNBT()), ((EntityPlayerMP) player));
