@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -35,7 +34,7 @@ import java.util.UUID;
 public class RitualLocator extends Ritual {
 
     public RitualLocator() {
-        super(new ResourceLocation(Bewitchment.MODID, "locator"), Arrays.asList(Util.get("enderiumBlock"), Util.get(ModObjects.waystone), Util.get(ModObjects.taglock)), null, null, false, 5, 1000, 20, BlockGlyph.NORMAL, BlockGlyph.NETHER, BlockGlyph.ENDER);
+        super(new ResourceLocation(Bewitchment.MODID, "locator"), Arrays.asList(Util.get("blockEnderium"), Util.get(ModObjects.waystone), Util.get(ModObjects.taglock)), null, null, false, 5, 1000, 20, BlockGlyph.NORMAL, BlockGlyph.NETHER, BlockGlyph.ENDER);
     }
 
     @Override

@@ -63,7 +63,7 @@ public class RitualTeleport extends Ritual {
 				if (stack.getItem() instanceof ItemTaglock) {
 					Entity entity = entityByUUID(world, UUID.fromString(stack.getTagCompound().getString("boundId")));
 					if(entity != null && entity instanceof EntityPlayer) {
-						world.playSound((EntityPlayer) entity, pos, SoundEvents.AMBIENT_CAVE, SoundCategory.BLOCKS, 1f, 1f);
+						world.playSound((EntityPlayer) entity, entity.getPosition(), SoundEvents.AMBIENT_CAVE, SoundCategory.BLOCKS, 2f, 1f);
 						entity.sendMessage(new TextComponentString("Herobrine joined the game").setStyle(new Style().setColor(TextFormatting.YELLOW)));
 					}
 				}
