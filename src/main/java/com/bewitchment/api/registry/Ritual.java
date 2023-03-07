@@ -41,6 +41,8 @@ public class Ritual extends IForgeRegistryEntry.Impl<Ritual> {
 
 	protected final NBTTagCompound nbt = new NBTTagCompound();
 
+	private boolean isSecret = false;
+
 	public Ritual(ResourceLocation name, List<Ingredient> input, Predicate<EntityLivingBase> sacrificePredicate, List<ItemStack> output, boolean canBePerformedRemotely, int time, int startingPower, int runningPower, int small, int medium, int big) {
 		setRegistryName(name);
 		if (input.size() > 10) throw new IllegalArgumentException("Rituals can only have at most 10 input items");
@@ -135,4 +137,13 @@ public class Ritual extends IForgeRegistryEntry.Impl<Ritual> {
 		}
 		return Util.areISListsEqual(input, handler);
 	}
+
+	public boolean isSecret() {
+		return isSecret;
+	}
+
+	protected void setSecret() {
+		isSecret = true;
+	}
+
 }

@@ -10,6 +10,8 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.stream.Collectors;
+
 @SuppressWarnings("unused")
 @JEIPlugin
 public class BewitchmentJEI implements IModPlugin {
@@ -29,7 +31,12 @@ public class BewitchmentJEI implements IModPlugin {
 	@Override
 	public void register(IModRegistry registry) {
 		registry.handleRecipes(Ritual.class, new RitualCategory.RitualWrapperFactory(registry.getJeiHelpers().getGuiHelper()), RitualCategory.UID);
-		registry.addRecipes(GameRegistry.findRegistry(Ritual.class).getValuesCollection(), RitualCategory.UID);
+		registry.addRecipes(
+				GameRegistry.findRegistry(Ritual.class).getValuesCollection().stream()
+						.filter((rite) -> !rite.isSecret())
+						.collect(Collectors.toList())
+				, RitualCategory.UID);
+
 		registry.addRecipeCatalyst(new ItemStack(ModObjects.focal_chalk), RitualCategory.UID);
 
 		registry.handleRecipes(CauldronRecipe.class, CauldronCategory.Wrapper::new, CauldronCategory.UID);

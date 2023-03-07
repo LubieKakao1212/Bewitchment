@@ -35,6 +35,7 @@ public class RitualLocator extends Ritual {
 
     public RitualLocator() {
         super(new ResourceLocation(Bewitchment.MODID, "locator"), Arrays.asList(Util.get("blockEnderium"), Util.get(ModObjects.waystone), Util.get(ModObjects.taglock)), null, null, false, 5, 1000, 20, BlockGlyph.NORMAL, BlockGlyph.NETHER, BlockGlyph.ENDER);
+        setSecret();
     }
 
     @Override
