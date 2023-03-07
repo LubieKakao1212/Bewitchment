@@ -27,8 +27,12 @@ import net.minecraft.item.*;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.play.server.SPacketCustomSound;
+import net.minecraft.network.play.server.SPacketSoundEffect;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -109,6 +113,11 @@ public class Util {
 
 	public static EntityPlayer findPlayer(String uuid) {
 		return findPlayer(UUID.fromString(uuid));
+	}
+
+	public static void playSoundToPlayer(EntityPlayerMP player, SoundEvent event, SoundCategory cat, float volume, float pitch) {
+		//player.connection.sendPacket(new SPacketCustomSound(event.getSoundName().toString(), cat, player.posX, player.posX, player.posZ, volume, pitch));
+		player.connection.sendPacket(new SPacketSoundEffect(event, cat, player.posX, player.posY, player.posZ, volume, pitch));
 	}
 
 	public static Ingredient get(Object... objects) {

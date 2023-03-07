@@ -8,8 +8,10 @@ import com.bewitchment.common.block.tile.entity.TileEntityGlyph;
 import com.bewitchment.common.item.ItemTaglock;
 import com.bewitchment.common.item.ItemWaystone;
 import com.bewitchment.registry.ModObjects;
+import com.bewitchment.registry.ModSounds;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -26,11 +28,12 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.awt.*;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @SuppressWarnings("ConstantConditions")
 public class RitualTeleport extends Ritual {
 	public RitualTeleport() {
-		super(new ResourceLocation(Bewitchment.MODID, "teleport"), Collections.singletonList(Util.get(ModObjects.waystone, ModObjects.taglock)), null, null, false, 5, 450, 20, BlockGlyph.ENDER, -1, -1);
+		super(new ResourceLocation(Bewitchment.MODID, "teleport"), Collections.singletonList(Util.get(ModObjects.waystone, ModObjects.taglock)), null, null, false, 5, 450, 20, BlockGlyph.ENDER, BlockGlyph.NETHER, BlockGlyph.ENDER);
 	}
 
 	@Override
@@ -63,7 +66,8 @@ public class RitualTeleport extends Ritual {
 				if (stack.getItem() instanceof ItemTaglock) {
 					Entity entity = entityByUUID(world, UUID.fromString(stack.getTagCompound().getString("boundId")));
 					if(entity != null && entity instanceof EntityPlayer) {
-						world.playSound((EntityPlayer) entity, entity.getPosition(), SoundEvents.AMBIENT_CAVE, SoundCategory.BLOCKS, 2f, 1f);
+						/*SoundEvents.AMBIENT_CAVE*/
+						Util.playSoundToPlayer((EntityPlayerMP) entity,  ModSounds.WEREWOLF_HOWL,SoundCategory.BLOCKS, 1f, 2f);
 						entity.sendMessage(new TextComponentString("Herobrine joined the game").setStyle(new Style().setColor(TextFormatting.YELLOW)));
 					}
 				}
@@ -78,34 +82,42 @@ public class RitualTeleport extends Ritual {
 			for (int i = 0; i < inventory.getSlots(); i++) {
 				ItemStack stack = inventory.getStackInSlot(i);
 				if (stack.getItem() instanceof ItemWaystone) {
-					for (Entity entity : world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(effectivePos).grow(3))) {
-						world.playSound(null, entity.getPosition(), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
-						if (entity instanceof EntityPlayer)
-							entity.sendMessage(new TextComponentString("You have been bamboozled"));
-					}
-					/*BlockPos pos0 = BlockPos.fromLong(stack.getTagCompound().getLong("location"));
+					BlockPos pos0 = BlockPos.fromLong(stack.getTagCompound().getLong("location"));
 					int dimension = stack.getTagCompound().getInteger("dimension");
 					stack.damageItem(1, caster);
-					break;*/
+
+					if (pos0 == null) {
+						return;
+					}
+					if(dimension != world.provider.getDimension()) {
+						forEachAffectedEntity(world, altarPos, (entity) -> entity.sendMessage(new TextComponentString("According to act 403 of interdimensional law: You cannot teleport across dimensions (and time)")
+								.setStyle(new Style().setColor(TextFormatting.GOLD))));
+						return;
+					}
+
+					forEachAffectedEntity(world, altarPos, (entity) ->
+							{
+								if(teleport(entity, pos0)) {
+									//world.playSound((EntityPlayer) entity, entity.getPosition(), SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 1, 1);
+									Util.playSoundToPlayer((EntityPlayerMP) entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT, SoundCategory.PLAYERS, 2f, 1f);
+								}
+							});
 				}
 				if (stack.getItem() instanceof ItemTaglock) {
 					Entity entity = entityByUUID(world, UUID.fromString(stack.getTagCompound().getString("boundId")));
 					if(entity == null) {
-						for (Entity caster2 : world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(effectivePos).grow(3))) {
-							caster2.sendMessage(new TextComponentString("Congratulations!! You have summoned an ")
+						forEachAffectedEntity(world, altarPos, (entity2) ->
+								entity2.sendMessage(new TextComponentString("Congratulations!! You have summoned an ")
 									.appendSibling(new TextComponentString("Legendary ")
 											.setStyle(new Style().setColor(TextFormatting.GOLD)))
 									.appendSibling(new TextComponentString("Air")
-											.setStyle(new Style().setColor(TextFormatting.GRAY))));
-						}
+											.setStyle(new Style().setColor(TextFormatting.GRAY)))));
 					}else {
 						stack.shrink(1);
 
 						BlockPos pos0 = effectivePos;
 
-						if (entity instanceof EntityPlayer)
-							Util.teleportPlayer((EntityPlayer) entity, pos0.getX() + 0.5, pos0.getY(), pos0.getZ() + 0.5);
-						else entity.setPositionAndUpdate(pos0.getX() + 0.5, pos0.getY(), pos0.getZ() + 0.5);
+						teleport(entity, pos0);
 					}
 					return;
 				}
@@ -132,5 +144,23 @@ public class RitualTeleport extends Ritual {
 		}
 		return null;
 	}
+
+	private void forEachAffectedEntity(World world, BlockPos pos, Consumer<Entity> action) {
+		for (Entity caster2 : world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(pos).grow(3))) {
+			action.accept(caster2);
+		}
+	}
+
+	private boolean teleport(Entity entity, BlockPos targetPos) {
+		if (entity instanceof EntityPlayer) {
+			Util.teleportPlayer((EntityPlayer) entity, targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+			return true;
+		}
+		else {
+			entity.setPositionAndUpdate(targetPos.getX() + 0.5, targetPos.getY(), targetPos.getZ() + 0.5);
+			return false;
+		}
+	}
+
 
 }

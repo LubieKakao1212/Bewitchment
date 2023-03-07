@@ -35,7 +35,9 @@ import java.util.UUID;
 public class ItemTaglock extends Item {
 
 	//One hour in miliseconds
-	public static final long taglockCooldown = 1000 * 60 * 60;
+	public static final long taglockSuccessCooldown = 1000 * 60 * 60;
+	//10 seconds in miliseconds
+	public static final long taglockFailCooldown = 1000 * 10;
 	public static final Double chance = 0.25;
 	public static final Random rand = new Random();
 
@@ -102,7 +104,7 @@ public class ItemTaglock extends Item {
 	private void doTaglock(EntityPlayer player, EntityLivingBase target, EnumHand hand) {
 		long currentTime = System.currentTimeMillis();
 		ExtendedPlayer extendedPlayer = player.getCapability(ExtendedPlayer.CAPABILITY, null);
-		long timeLeft = (extendedPlayer.lastTaglockUseTimestamp - currentTime) + taglockCooldown;
+		long timeLeft = extendedPlayer.lastTaglockCooldownEndTimestamp - currentTime;
 		if(timeLeft <= 0) {
 			double roll = rand.nextDouble();
 			Bewitchment.logger.info(roll);
@@ -111,11 +113,14 @@ public class ItemTaglock extends Item {
 				setTags(player, hand, target);
 				player.world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
 				target.sendMessage(new TextComponentString("Someone successfully taglocked you").setStyle(new Style().setColor(TextFormatting.RED)));
+
+				extendedPlayer.lastTaglockCooldownEndTimestamp = currentTime + taglockSuccessCooldown;
 			}else {
 				player.sendMessage(new TextComponentString("Failed to taglock target").setStyle(new Style().setColor(TextFormatting.RED)));
 				target.sendMessage(new TextComponentString("Someone failed to taglock you").setStyle(new Style().setColor(TextFormatting.RED)));
+
+				extendedPlayer.lastTaglockCooldownEndTimestamp = currentTime + taglockFailCooldown;
 			}
-			extendedPlayer.lastTaglockUseTimestamp = currentTime;
 		}else {
 			long seconds = timeLeft / 1000;
 			long minutes = seconds / 60;

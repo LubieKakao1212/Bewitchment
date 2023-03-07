@@ -35,7 +35,7 @@ public class ExtendedPlayer implements ICapabilitySerializable<NBTTagCompound>, 
 	public boolean canRitual = true;
 	public int ritualDisabledTime, fortuneTime, ritualsCast, mobsKilled, pets, peopleKilled;
 
-	public long lastTaglockUseTimestamp = -1;
+	public long lastTaglockCooldownEndTimestamp = -1;
 
 	public static void syncToClient(EntityPlayer player) {
 		if (!player.world.isRemote)
@@ -55,12 +55,13 @@ public class ExtendedPlayer implements ICapabilitySerializable<NBTTagCompound>, 
 		tag.setTag("curses", cursesList);
 		instance.curses.entrySet().stream().forEach(entry -> this.addNewCouple(entry, cursesList));
 
-		tag.setInteger("fortuneTime", fortuneTime);
+		tag.setInteger("fortuneTime", instance.fortuneTime);
 		tag.setInteger("ritualsCast", instance.ritualsCast);
 		tag.setInteger("mobsKilled", instance.mobsKilled);
 		tag.setInteger("ritualDisabledTime", instance.ritualDisabledTime);
 		tag.setInteger("pets", instance.pets);
 		tag.setInteger("peopleKilled", instance.peopleKilled);
+		tag.setLong("taglock", instance.lastTaglockCooldownEndTimestamp);
 		return tag;
 	}
 
@@ -81,6 +82,7 @@ public class ExtendedPlayer implements ICapabilitySerializable<NBTTagCompound>, 
 		instance.ritualDisabledTime = tag.getInteger("ritualDisabledTime");
 		instance.pets = tag.getInteger("pets");
 		instance.peopleKilled = tag.getInteger("peopleKilled");
+		instance.lastTaglockCooldownEndTimestamp = tag.getLong("taglock");
 	}
 
 	@Override
