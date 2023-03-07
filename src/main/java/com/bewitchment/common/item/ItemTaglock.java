@@ -10,6 +10,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,7 +57,7 @@ public class ItemTaglock extends Item {
 	@Override
 	public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
 		if (!player.world.isRemote && target != null && target.isNonBoss() && !(target instanceof EntityDemon) && !(target.getClass().getName().contains("Dragon"))) {
-			doTaglock(player, target, hand);
+			doTaglock(player, target, hand, chance);
 		}
 		return false;
 	}
@@ -81,7 +82,7 @@ public class ItemTaglock extends Item {
 						world.playSound(player, player.getPosition(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.NEUTRAL, 1.0F, 1.0F);
 					}
 					else {
-						doTaglock(player, player0, hand);
+						doTaglock(player, player0, hand, 1f);
 					}
 					return EnumActionResult.SUCCESS;
 				}
@@ -101,24 +102,24 @@ public class ItemTaglock extends Item {
 		}
 	}
 
-	private void doTaglock(EntityPlayer player, EntityLivingBase target, EnumHand hand) {
+	private void doTaglock(EntityPlayer player, EntityLivingBase target, EnumHand hand, double chance) {
 		long currentTime = System.currentTimeMillis();
 		ExtendedPlayer extendedPlayer = player.getCapability(ExtendedPlayer.CAPABILITY, null);
 		long timeLeft = extendedPlayer.lastTaglockCooldownEndTimestamp - currentTime;
 		if(timeLeft <= 0) {
 			double roll = rand.nextDouble();
-			Bewitchment.logger.info(roll);
-			if(roll < chance)
+			if(roll <= chance)
 			{
 				setTags(player, hand, target);
-				player.world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
+				//player.world.playSound(player, player.getPosition(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1f, 1f);
+				Util.playSoundToPlayer((EntityPlayerMP) player, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.PLAYERS, 1f, 1f);
 				target.sendMessage(new TextComponentString("Someone successfully taglocked you").setStyle(new Style().setColor(TextFormatting.RED)));
 
 				extendedPlayer.lastTaglockCooldownEndTimestamp = currentTime + taglockSuccessCooldown;
 			}else {
 				player.sendMessage(new TextComponentString("Failed to taglock target").setStyle(new Style().setColor(TextFormatting.RED)));
 				target.sendMessage(new TextComponentString("Someone failed to taglock you").setStyle(new Style().setColor(TextFormatting.RED)));
-
+				
 				extendedPlayer.lastTaglockCooldownEndTimestamp = currentTime + taglockFailCooldown;
 			}
 		}else {
